@@ -1,0 +1,37 @@
+전체 과정
+데이터 전처리 과정을 위해 csv 파일로 데이터를 받고 해당 데이터를 가공할 수 있는 형태로(연산이 필요한 항목은 object를 숫자로 변환) 만든다.
+
+데이터 프레임 구조 파악
+df.info()
+df.isnull()
+df.describe()
+
+df['column_name'].unique() : column_name에 속해있는 데이터를 group by 한다고 생각하면 된다. 하위 항목에 어떤 값들이 있는지 중복없이 나타내 준다.
+
+df['column_name'].str.replace('A', "B") : column_name 컬럼에 속한 데이터에 대해 A를 B로 대체(변환)한다.
+
++ str.strip()
+
+
+df.groupby() : 대상을 그룹지어서 데이터를 확인할 수 있다.
+ex_ df.groupby(['지역명'])['평당분양가격'].mean() : 지역명을 기준으로 평당분양가격에 대한 평균값을 계산한다.
+     df.groupby(['지역명'])['평당분양가격'].describe() : 평균값, count, min, max, 25%, 50%, 75%에 대한 정보를 확인할 수 있다.
+     df_last.groupby(['지역명', '전용면적'])['평당분양가격'].mean().unstack().round()
+     df_last.groupby(['지역명', '전용면적'])['평당분양가격'].mean().unstack().round().T
+     # T == transpose()
+
+pandas의 pivot_table을 사용하여도 groupby()와 같은 기능을 사용할 수 있다.
+코드가 좀 더 명시적이다.
+
+ex_pd.pivot_table(df_last, index=['지역명'], columns='전용면적', values=['평당분양가격'],aggfunc = 'mean')
+    p = pd.pivot_table(df_last, index = ['연도', '지역명'], values = '평당분양가격'  )
+
+pandas
+- to_numeric() : object type의 데이터를 정수형으로 변환시켜 주기 위해 사용한다. astype(int)을 사용하였을 때 변환하고자 하는 데이터의 null 값이 포함된 경우 해당 함수를 사용하는데 에러가 발생한다.
+그러므로 null값으로 인한 error에 대응할 수 있는 pandas의 to_numeric()을 사용할 수 있다.
+
+seaborn 시각화
+barplot, lineplot, catplot(subplot), boxplot, violinplot, regplot, scatterplot, lmplot, swarmplot
+
+히스토그램(분포도)
+distplot, FacetGrid(subplot)
